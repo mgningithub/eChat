@@ -15,20 +15,16 @@
     // document.onclick = test;
     //document.addEventListener('click', () => { document.activeElement.blur(); });
 
-    // テキストフィールド外をタップした時、ソフトキーボードを閉じる
-    document.addEventListener('click', () => { });
-    // document.addEventListener('click', () => {
-    //     if (document.activeElement === send_text) {
-    //         send_btn.textContent = "aaa";
-    //         console.log('adfafdas');
-    //     } else {
-    //         document.activeElement.blur();
-    //         send_btn.textContent = "bbb";
-    //         console.log('bbb');
-    //     }
-    // });
+    // テキストフィールド外をタップした時、
+    // ソフトキーボードを閉じて画面一番上へ移動しキャンバスを見せる
+    // document.addEventListener('click', () => { scrollTo(0, 0); });
 
-
+    document.addEventListener('click', () => {
+        if (document.activeElement !== send_text) {
+            send_text.blur();
+            console.log('aaa');
+        }
+    })
 
     // メッセージ送信
     send_form.addEventListener('submit', sendMessage, false);

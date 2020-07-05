@@ -195,10 +195,6 @@ cssで:hoverで指定していたがスマホでタッチするとhoverしっぱ
 
 iOSではfont-size:16px未満だとフォーカス時に画面ズームされる。発言し終わっても画面がズームしたままとなるため、UXがよくない。解決策は16px以上に設定との事だがretina考慮しデバイスピクセル比2倍の32px指定したがズームが発生した。段階的に試した結果、42px以降でズームが発生しなくなった。なぜ42pxなのかはわからないが、暫定対応とする。
 
-### input外をクリックした時フォーカスを外してキーボードを下したい
-
-
-
 ### 画面がスクロールさらた状態だとタッチのoffsetがきちんと取れていない
 
 window.pageYOffset不要だった。
@@ -206,6 +202,28 @@ window.pageYOffset不要だった。
 `e.touches[0].clientY - window.pageYOffset - rect.top`  
 ↓  
 `e.touches[0].clientY - rect.top`
+
+### input外をクリックした時フォーカスを外してキーボードを閉じたい
+
+inputにフォーカスがあたると画面が下にズレ、キーボードが表示される。
+input外をタッチしてキーボードを閉じられるようにしたい。
+下記の方法で出来た。
+
+`document.addEventListener('click', () => {});`
+
+下記のようにblurを使う必要があるかと思ったが不要だった。
+
+`
+document.addEventListener('click', () => {
+  if (document.activeElement !== send_text) {
+    send_text.blur();
+  }
+`
+キーボードは閉じられたが画面は下に降りたままでキャンバスが見えないので
+同時に画面一番上までスクロールする。
+
+`document.addEventListener('click', () => { scrollTo(0, 0); });`
+
 
 ### クライアントがスリープなどで切断された時にクライアント自身に切断された事を通知されない
 
