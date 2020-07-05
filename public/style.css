@@ -109,7 +109,7 @@ input:focus {
   background-color: tomato;
   width: 100px;
   height: 64px; /*入力欄のborder2*2px追加*/
-  font-size: 1.5em;
+  font-size: 32px;
   font-weight: bold;
   color: #fff;
   border-radius: 32px;
