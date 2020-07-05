@@ -94,7 +94,7 @@ input:focus {
 }
 
 input,select {
-  font-size: 200%; /*iOSで16px以上でないとフォーカス時にズームとなる*/
+  font-size: 300px; /*iOSで16px以上でないとフォーカス時にズームとなる*/
 }
 
 #send_text {
@@ -102,9 +102,10 @@ input,select {
     送信ボタンの横幅を引いたサイズに動的に計算
     ボタンwidth:100, 入力欄padding:10*2, div"send"のpadding:5*2
   */
+  font-size: 300px; 
   width: calc(100% - 100px - 20px - 10px);
   height: 60px;
-  border-radius: 30px;
+  border-radius: 1px;
   padding: 0 10px;
   border: solid 2px #999999
 }
