@@ -18,6 +18,8 @@
         send_text.value = "";
         send_text.focus();
     }
+    // スマホでtextフィールド外をクリックした時にフォーカスを外してキーボードを引っ込める
+    send_text.addEventListener('blur', () => { send_btn.focus() })
 
     // メッセージ受信
     socket.on('say', addMessage);
