@@ -17,14 +17,7 @@
 
     // テキストフィールド外をタップした時、
     // ソフトキーボードを閉じて画面一番上へ移動しキャンバスを見せる
-    // document.addEventListener('click', () => { scrollTo(0, 0); });
-
-    document.addEventListener('click', () => {
-        if (document.activeElement !== send_text) {
-            send_text.blur();
-            console.log('aaa');
-        }
-    })
+    document.addEventListener('click', () => { scrollTo(0, 0); });
 
     // メッセージ送信
     send_form.addEventListener('submit', sendMessage, false);
