@@ -57,8 +57,8 @@
   function getPosition(e) {
     const rect = e.target.getBoundingClientRect();
     return {
-      x: e.offsetX || (e.touches[0].clientX - window.pageXOffset - rect.left),
-      y: e.offsetY || (e.touches[0].clientY - window.pageYOffset - rect.top)
+      x: e.offsetX || (e.touches[0].clientX - rect.left),
+      y: e.offsetY || (e.touches[0].clientY - rect.top)
     }
   }
 
