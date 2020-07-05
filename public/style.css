@@ -1,40 +1,44 @@
-
-/**
- * Fix user-agent
- */
-
-* {
-  box-sizing: border-box;
+html {
+  touch-action: manipulation;
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
+input:focus {
+  outline: none;
+}
+
+#app {
+  margin: 0 auto;
   padding: 0;
+  width: 900px; /*htmlのcanvasのwidthと同期を取る事*/
 }
 
 /**
- * Canvas
+ * キャンバス
  */
 
 .whiteboard {
-  height: 100%;
+  display: block;
   width: 100%;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
+  outline: solid 1px #999999;
+}
+
+/**
+ * 操作
+ */
+.controls {
+  padding: 10px;
 }
 
 .colors {
-  position: fixed;
+  display: inline;
 }
 
 .color {
   display: inline-block;
-  height: 48px;
-  width: 48px;
+  vertical-align: middle;
+  border: solid 1px #999999;
+  height: 50px;
+  width: 50px;
 }
 
 .color.black { background-color: black; }
@@ -42,3 +46,93 @@ html, body {
 .color.green { background-color: green; }
 .color.blue { background-color: blue; }
 .color.yellow { background-color: yellow; }
+
+#clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: right;
+  background-color: #248;
+  width: 100px;
+  height: 50px;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 25px;
+}
+#clear:hover {
+  background-color: #AAA;
+}
+
+/**
+ * プレイヤーリスト
+ */
+#players {
+  margin-top: 10px;
+}
+
+.player {
+  display: inline-block;
+  font-size: 1.5em;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 2px 2px;
+}
+
+/**
+ * 発言
+ */
+#send {
+  display: block;
+  padding: 10px;
+}
+
+#send_text {
+  /*
+    送信ボタンの横幅を引いたサイズに動的に計算
+    ボタンwidth:100, 入力欄padding:10*2, div"send"のpadding:5*2
+  */
+  width: calc(100% - 100px - 20px - 10px);
+  height: 60px;
+  border-radius: 30px;
+  font-size: 2em;
+  padding: 0 10px;
+  border: solid 2px #999999
+}
+
+#send_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: right;
+  background-color: tomato;
+  width: 100px;
+  height: 64px; /*入力欄のborder2*2px追加*/
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 32px;
+}
+#send_btn:hover{
+  background-color: #AAA;
+}
+
+/**
+ * メッセージ
+ */
+.message {
+  border-radius: 10px;
+  text-align: left;
+  margin-bottom: 5px;
+  padding: 5px;
+  font-size: 2em;
+}
+
+.msg_name {
+  font-weight: bold;
+}
+
+.msg_timestamp {
+  color: gray;
+  font-size: 0.5em;
+}
