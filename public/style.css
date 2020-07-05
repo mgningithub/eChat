@@ -92,9 +92,9 @@ input:focus {
 #send_text {
   /*
     送信ボタンの横幅を引いたサイズに動的に計算
-    ボタンwidth:100, 入力欄padding:10*2, div"send"のpadding:5*2
+    ボタンwidth:100, 入力欄padding:20*2, div"send"のpadding:5*2
   */
-  width: calc(100% - 100px - 20px - 10px);
+  width: calc(100% - 100px - 40px - 10px);
   height: 60px;
   border-radius: 30px;
   padding: 0 20px;
