@@ -61,7 +61,7 @@ input:focus {
   color: #fff;
   border-radius: 25px;
 }
-#clear:hover {
+#clear:active {
   background-color: #AAA;
 }
 
@@ -78,6 +78,7 @@ input:focus {
   border-radius: 10px;
   padding: 10px;
   margin: 2px 2px;
+  height: 30px;
 }
 
 /**
@@ -88,8 +89,8 @@ input:focus {
   padding: 10px;
 }
 
-#send_form input[type=text] {
-  font-size: 2rem;
+input {
+  font-size: 16px; /*iOSで16px以上でないとフォーカス時にズームとなる*/
 }
 
 #send_text {
@@ -118,7 +119,7 @@ input:focus {
   color: #fff;
   border-radius: 32px;
 }
-#send_btn:hover{
+#send_btn:active {
   background-color: #AAA;
 }
 
