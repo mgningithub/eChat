@@ -66,8 +66,9 @@
 
     // 開始
     function gameStart() {
-        // 名前入力
-        const defaultName = "Guest"
+        // 名前入力　暫定対応として名前が被らないよう秒+ミリ秒を付加
+        let dt = new Date();
+        const defaultName = "Guest" + dt.getSeconds() + dt.getMilliseconds()
         let name = prompt("Enter your name.", defaultName);
         if (!name) { name = dafeultName };
         socket.emit('join', name);
