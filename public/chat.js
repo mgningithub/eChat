@@ -8,6 +8,8 @@
     const send_text = document.getElementById("send_text");
     const send_btn = document.getElementById("send_btn");
 
+    document.addEventListener('click', send_text.blur());
+
     // メッセージ送信
     send_form.addEventListener('submit', sendMessage, false);
     send_btn.addEventListener('click', sendMessage, false);
