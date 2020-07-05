@@ -8,17 +8,32 @@
     const send_text = document.getElementById("send_text");
     const send_btn = document.getElementById("send_btn");
 
-    document.addEventListener('click', send_text.blur());
+    //document.getElementsByTagName('body')[0].addEventListener('click', alert('testbody'));
+
+    // function test() { console.log('click') };
+
+    // document.onclick = test;
+    //document.addEventListener('click', () => { document.activeElement.blur(); });
+    document.addEventListener('click', () => {
+        if ((document.activeElement === send_text ||
+            document.activeElement === send_btn)) {
+            console.log('adfafdas');
+        } else {
+            console.log('bbb');
+        }
+    });
+
+
 
     // メッセージ送信
     send_form.addEventListener('submit', sendMessage, false);
     send_btn.addEventListener('click', sendMessage, false);
     function sendMessage(e) {
         e.preventDefault();
+        send_text.focus();
         if (!send_text.value) { return };
         socket.emit('player_say', send_text.value);
         send_text.value = "";
-        send_text.focus();
     }
 
     // メッセージ受信
