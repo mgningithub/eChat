@@ -234,6 +234,11 @@ document.addEventListener('click', () => {
 名前入力時に前回入力した名前を引き継ぐ。
 sessionStorageを使う。次回のIssue。
 
+### プレイヤーの名前の重複を防ぐ
+
+暫定対応としてGuestにはミリ秒を事前に振る。
+再帰で同名いたら番号振る。次回のIssue。
+
 ## 公開
 
 最低限の動作確認ができたので言語学習者の集まるHelloTalkで公開し
