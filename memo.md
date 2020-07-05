@@ -1,7 +1,7 @@
 ## 目標
-node.jsとsocket.ioを使ってお絵描きチャットを作りたい。
-開発は今までvagrand上のubuntuで行っていたが仮想環境は正直面倒くさいし
-nodeなのでWindows上でVSCode使いながら行う。
+node.jsとsocket.ioを使ってお絵描きチャットを作る。
+開発は今までvagrand上のubuntuで行っていたが仮想環境での開発はひと手間かかる事と
+Expressのシンプルなサーバ機能を使うためWindows上でVSCode使いながら行う。
 
 デプロイ先はherokuとする。
 クレカ未登録での無料時間は毎月550時間。  
