@@ -49,12 +49,15 @@ function onConnection(socket) {
   // キャンバスクリア
   socket.on('clear', () => {
     io.emit('clear');
-    // io.emit('say',
-    //   {
-    //     sender: system,
-    //     message: players[socket.id].name + " cleared the canvas.",
-    //     ts: Date.now()
-    //   })
+    console.log(players);
+    console.log(socket.id);
+    console.log(players[socket.id]);
+    io.emit('say',
+      {
+        sender: system,
+        message: players[socket.id].name + " cleared the canvas.",
+        ts: Date.now()
+      })
   })
   // 接続時
   socket.on('join', (name) => {
@@ -85,7 +88,7 @@ function onConnection(socket) {
         ts: Date.now()
       })
     // プレイヤーリストから削除
-    delete players[socke.id];
+    delete players[socket.id];
     // プレイヤーリスト発信
     io.emit('players', JSON.stringify(players));
   })

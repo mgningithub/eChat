@@ -46,6 +46,7 @@ input:focus {
 .color.green { background-color: green; }
 .color.blue { background-color: blue; }
 .color.yellow { background-color: yellow; }
+.color.white { background-color: white; }
 
 #clear {
   display: flex;
