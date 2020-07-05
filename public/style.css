@@ -86,7 +86,10 @@ input:focus {
 #send {
   display: block;
   padding: 10px;
-  font-size: 32px;
+}
+
+#send_form input[type=text] {
+  font-size: 2rem;
 }
 
 #send_text {
@@ -97,10 +100,10 @@ input:focus {
   width: calc(100% - 100px - 20px - 10px);
   height: 60px;
   border-radius: 30px;
-  font-size: 32px;
   padding: 0 10px;
   border: solid 2px #999999
 }
+
 
 #send_btn {
   display: flex;
