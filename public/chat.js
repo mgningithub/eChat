@@ -16,15 +16,16 @@
     //document.addEventListener('click', () => { document.activeElement.blur(); });
 
     // テキストフィールド外をタップした時、ソフトキーボードを閉じる
-    document.addEventListener('click', () => {
-        if (document.activeElement === send_text) {
-            send_btn.textContent = "aaa";
-            console.log('adfafdas');
-        } else {
-            send_btn.textContent = "bbb";
-            console.log('bbb');
-        }
-    });
+    // document.addEventListener('click', () => {
+    //     if (document.activeElement === send_text) {
+    //         send_btn.textContent = "aaa";
+    //         console.log('adfafdas');
+    //     } else {
+    //         document.activeElement.blur();
+    //         send_btn.textContent = "bbb";
+    //         console.log('bbb');
+    //     }
+    // });
 
 
 
