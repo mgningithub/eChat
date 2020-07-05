@@ -86,6 +86,7 @@ input:focus {
 #send {
   display: block;
   padding: 10px;
+  font-size: 32px;
 }
 
 #send_text {
