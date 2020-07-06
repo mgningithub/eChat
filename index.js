@@ -7,6 +7,9 @@ const port = process.env.PORT || 3000;
 
 app.use(express.static(__dirname + '/public'));
 
+// エラーキャッチ
+process.on('uncaughtException', (err) => { console.log(err); });
+
 // システム(ダミープレイヤー)
 const system = {
   name: "SYSTEM",
@@ -48,16 +51,24 @@ function onConnection(socket) {
   ))
   // キャンバスクリア
   socket.on('clear', () => {
-    io.emit('clear');
-    console.log(players);
-    console.log(socket.id);
-    console.log(players[socket.id]);
-    io.emit('say',
-      {
-        sender: system,
-        message: players[socket.id].name + " cleared the canvas.",
-        ts: Date.now()
-      })
+    try {
+      io.emit('clear');
+      // join経由していないsocket対策
+      let name = (players[socket.id].name) ? players[socket.id].name : "[undefined]";
+      console.log(players);
+      console.log(socket.id);
+      console.log(players[socket.id]);
+      io.emit('say',
+        {
+          sender: system,
+          message: players[socket.id].name + " cleared the canvas.",
+          ts: Date.now()
+        })
+    } catch (err) {
+      console.log(socket.id, err);
+      socket.disconnect();
+    }
+
   })
   // 接続時
   socket.on('join', (name) => {

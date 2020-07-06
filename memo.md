@@ -13,6 +13,8 @@ https://jp.heroku.com/free
 いつか自分でも作れたらと思っていたので
 動いたら感動すると思う。
 
+---
+
 ## node.jsアップデート
 インストーラダウンロードし実行  
 エラー発生。  
@@ -50,53 +52,40 @@ https://git.heroku.com/majestic-biscayne-71255.git
 `git push heroku master`  
 失敗した
 
----
-
-! [remote rejected] master -> master (pre-receive hook declined)
-error: failed to push some refs to 'https://git.heroku.com/majestic-biscayne-71255.git'
-
----
+>! [remote rejected] master -> master (pre-receive hook declined)
+error: failed to push some refs to >'https://git.heroku.com/majestic-biscayne-71255.git'
 
 `heroku logs`  
 
----
-
-!     No default language could be detected for this app.
-			HINT: This occurs when Heroku cannot detect the buildpack to use  for this application automatically.
-			See https://devcenter.heroku.com/articles/buildpacks
- !     Push failed
-
----
+>!     No default language could be detected for this app.
+>			HINT: This occurs when Heroku cannot detect the buildpack to use  for this application automatically.
+>			See https://devcenter.heroku.com/articles/buildpacks
+> !     Push failed
 
 言語がわからんと言ってる。
 そういえばnpm initしてない。
 
-npm init  
-npm install socket.io  
-npm install express  
+`npm init`  
+`npm install socket.io`  
+`npm install express`  
 
-git add.
-git commit -m 'install socket.io, express'
+`git add.`  
+`git commit -m 'install socket.io, express'`
 
-git push heroku master
+`git push heroku master`
 
 ブラウザで見てみる  
 https://majestic-biscayne-71255.herokuapp.com/  
 
 エラー
 
----
+>Application error
+>An error occurred in the application and your page could not be served. If you are the application owner, check your logs for details. You can do this from the Heroku CLI with the command
+>heroku logs --tail
 
-Application error
-An error occurred in the application and your page could not be served. If you are the application owner, check your logs for details. You can do this from the Heroku CLI with the command
-heroku logs --tail
+`heroku logs`
 
----
-
-heroku logs
-
----
-2020-07-05T02:58:53.944819+00:00 heroku[web.1]: State changed from crashed to starting
+>2020-07-05T02:58:53.944819+00:00 heroku[web.1]: State changed from crashed to starting
 2020-07-05T02:58:56.672936+00:00 heroku[web.1]: Starting process with command `npm start`
 2020-07-05T02:59:03.791120+00:00 app[web.1]: npm ERR! missing script: start
 2020-07-05T02:59:03.807903+00:00 app[web.1]:
@@ -105,17 +94,15 @@ heroku logs
 2020-07-05T02:59:03.872981+00:00 heroku[web.1]: Process exited with status 1
 2020-07-05T02:59:03.926009+00:00 heroku[web.1]: State changed from starting to crashed
 
----
-
 package.json に
 `"start": "node index.js",`
 を追加
 
-git add .  
-git commit -m ''  
-git push heroku master  
+`git add .`  
+`git commit -m ''`  
+`git push heroku master`
 
-heroku open
+`heroku open`
 
 動いた。  
 感動。  
@@ -178,6 +165,8 @@ clear時にsocket.idに対応した名前がplayersから取得できない、
 disconnect時にsocket.idが2つ表示されるという現象が起きた。1ユーザで2接続あるように見えるため、chat.jsでmain.jsでそれぞれsocket=io();している事が原因と目星をつける。html側でchat.js,main.jsを呼び出す前にグローバルでconst socket = io();とする。やはり接続が2つ出て時間を溶かす。しばらく経つとコードは変えていないが、きちんと動くようになった。ブラウザ側のキャッシュがクリアされない事が原因だと思われる。プライベートモードなどで試す。
 ユーザ背景色はランダムで個別に色を持つようにした。背景色となるため、淡い色でランダム生成するよう調整。
 
+---
+
 ## デプロイしてタッチデバイス実機で確認
 
 タッチ操作はChromeのエミュレータで確認していたが
@@ -228,6 +217,7 @@ document.addEventListener('click', () => {
 ### クライアントがスリープなどで切断された時にクライアント自身に切断された事を通知されない
 
 スリープ復帰しても描けてしまうため、クライアントがサーバと切断している事に気づけない。ハートビートなどを実装する必要あり？次回のIssue。
+※socket.on('disconnect')で拾えた。対応済み。
 
 ### 前回のログイン情報を保持
 
@@ -239,7 +229,30 @@ sessionStorageを使う。次回のIssue。
 暫定対応としてGuestにはミリ秒を事前に振る。
 再帰で同名いたら番号振る。次回のIssue。
 
+### タッチデバイスで実機確認方法
+
+実機確認するために何度もデプロイしてリポジトリを汚してしまった。
+同じネットワーク内であればip:portでアクセスして確認できる。
+
+---
+
 ## 公開
 
-最低限の動作確認ができたので言語学習者の集まるHelloTalkで公開し
+最低限の動作確認ができたので言語学習者の集まるSNS、HelloTalkで公開し
 可能であればフィードバックを貰う。
+
+## 公開後
+
+問題発生。
+接続時の名前入力にprompt使用しているが。
+HelloTalk内のブラウザはpromptが出ない。
+正常系ではありえない想定だった名前なしで接続された状態で操作されるとnameを参照しに行く処理でundefinedエラーが発生し
+そのままサーバプロセスがこける。
+
+名前入力の画面を新たに用意して対応。
+サーバごと落ちる件nameを参照しに行く箇所にtry~catchと
+process.on('uncaughtException')で対応。
+
+アプリを再起動  
+`heroku ps:scale web=0`  
+`heroku ps:scale web=1`
