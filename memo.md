@@ -188,9 +188,11 @@ iOSではfont-size:16px未満だとフォーカス時に画面ズームされる
 
 window.pageYOffset不要だった。
 
-`e.touches[0].clientY - window.pageYOffset - rect.top`  
+```
+e.touches[0].clientY - window.pageYOffset - rect.top
 ↓  
-`e.touches[0].clientY - rect.top`
+e.touches[0].clientY - rect.top
+```
 
 ### input外をクリックした時フォーカスを外してキーボードを閉じたい
 
@@ -198,21 +200,25 @@ inputにフォーカスがあたると画面が下にズレ、キーボードが
 input外をタッチしてキーボードを閉じられるようにしたい。
 下記の方法で出来た。
 
-`document.addEventListener('click', () => {});`
+```
+document.addEventListener('click', () => {});
+```
 
 下記のようにblurを使う必要があるかと思ったが不要だった。
 
-`
+```
 document.addEventListener('click', () => {
   if (document.activeElement !== send_text) {
     send_text.blur();
   }
-`
+```
 
 キーボードは閉じられたが画面は下に降りたままでキャンバスが見えないので
 同時に画面一番上までスクロールする。
 
-`document.addEventListener('click', () => { scrollTo(0, 0); });`
+```
+document.addEventListener('click', () => { scrollTo(0, 0); });
+```
 
 ### クライアントがスリープなどで切断された時にクライアント自身に切断された事を通知されない
 
@@ -256,3 +262,25 @@ process.on('uncaughtException')で対応。
 アプリを再起動  
 `heroku ps:scale web=0`  
 `heroku ps:scale web=1`
+
+---
+
+## 微修正
+
+### タッチデバイスか判定し操作を変える
+
+スマホを考慮し、画面タッチでソフトキーボードを閉じて
+画面上部までスクロールし、キャンバスに画面を戻す動きにしていたが
+PCでは不要な為、クライアントがタッチデバイスかどうか判断して動きを変える。
+
+```
+    function isTouchDevice() {
+        return ('ontouchstart' in document) && ('orientation' in window)
+    }
+```
+
+### 描画ログを保持
+
+途中参加のクライアントはまっさらなキャンバスからスタートで
+それ以前に描かれていた絵が見られなかった。
+サーバ側で描画ログを保持し、クライアント接続時にそれまでに描かれた絵を再生するよう修正。

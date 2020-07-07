@@ -7,8 +7,8 @@ const port = process.env.PORT || 3000;
 
 app.use(express.static(__dirname + '/public'));
 
-// エラーキャッチ
-process.on('uncaughtException', (err) => { console.log(err); });
+// 描画ログ
+let log = [];
 
 // システム(ダミープレイヤー)
 const system = {
@@ -29,6 +29,9 @@ class Player {
   }
 }
 
+// エラーキャッチ
+process.on('uncaughtException', (err) => { console.log(err); });
+
 /** 淡い色を取得。プレイヤー背景色として使用。 */
 function getPaleColor() {
   let v1 = 360 * Math.random();
@@ -40,7 +43,10 @@ function getPaleColor() {
 /** クライアントへのレスポンス */
 function onConnection(socket) {
   // 描画
-  socket.on('drawing', (data) => socket.broadcast.emit('drawing', data));
+  socket.on('drawing', (data) => {
+    socket.broadcast.emit('drawing', data);
+    log.push(data);
+  });
   // プレイヤー発言
   socket.on('player_say', (data) => io.emit('say',
     {
@@ -55,15 +61,13 @@ function onConnection(socket) {
       io.emit('clear');
       // join経由していないsocket対策
       let name = (players[socket.id].name) ? players[socket.id].name : "[undefined]";
-      console.log(players);
-      console.log(socket.id);
-      console.log(players[socket.id]);
       io.emit('say',
         {
           sender: system,
           message: players[socket.id].name + " cleared the canvas.",
           ts: Date.now()
         })
+      log = [];
     } catch (err) {
       console.log(socket.id, err);
       socket.disconnect();
@@ -103,6 +107,9 @@ function onConnection(socket) {
     // プレイヤーリスト発信
     io.emit('players', JSON.stringify(players));
   })
+
+  // 接続時、ログを発信
+  io.to(socket.id).emit("log", log);
 }
 
 io.on('connection', onConnection);

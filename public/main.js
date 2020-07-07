@@ -114,4 +114,10 @@
   clear.addEventListener('click', () => { socket.emit('clear') }, false);
   socket.on('clear', () => { context.clearRect(0, 0, canvas.width, canvas.height) });
 
+  // 描画ログ受信
+  socket.on('log', drawLog);
+  function drawLog(data) {
+    data.forEach(log => { onDrawingEvent(log); });
+  }
+
 })();

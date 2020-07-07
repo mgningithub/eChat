@@ -8,9 +8,20 @@
     const send_text = document.getElementById("send_text");
     const send_btn = document.getElementById("send_btn");
 
-    // テキストフィールド外をタップした時、
-    // ソフトキーボードを閉じて画面一番上へ移動しキャンバスを見せる
-    document.addEventListener('click', () => { scrollTo(0, 0); });
+    /** タッチデバイスか判断 */
+    function isTouchDevice() {
+        return ('ontouchstart' in document) && ('orientation' in window)
+    }
+
+    // スマホでテキストフィールド外をタップした時、
+    // ソフトキーボードを閉じて画面一番上へ移動しキャンバスを見せる。
+    // ただしsendボタンはユーザが続けて発言できるようスクロールしない。
+    document.addEventListener('click', scrollTop);
+    function scrollTop(e) {
+        if (e.target !== send_btn && isTouchDevice()) {
+            window.scrollTo(0, 0);
+        }
+    }
 
     // メッセージ送信
     send_form.addEventListener('submit', sendMessage, false);
