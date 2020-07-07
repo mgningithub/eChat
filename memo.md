@@ -184,13 +184,15 @@ cssで:hoverで指定していたがスマホでタッチするとhoverしっぱ
 
 iOSではfont-size:16px未満だとフォーカス時に画面ズームされる。発言し終わっても画面がズームしたままとなるため、UXがよくない。解決策は16px以上に設定との事だがretina考慮しデバイスピクセル比2倍の32px指定したがズームが発生した。段階的に試した結果、42px以降でズームが発生しなくなった。なぜ42pxなのかはわからないが、暫定対応とする。
 
-### 画面がスクロールさらた状態だとタッチのoffsetがきちんと取れていない
+### 画面をスクロールした状態でタッチのoffsetがきちんと取れていない
 
 window.pageYOffset不要だった。
 
 ```
 e.touches[0].clientY - window.pageYOffset - rect.top
-↓  
+```
+↓
+```
 e.touches[0].clientY - rect.top
 ```
 
