@@ -66,6 +66,7 @@ input:focus {
   font-weight: bold;
   color: #fff;
   border-radius: 25px;
+  border: none;
 }
 #clear:active {
   background-color: #AAA;
@@ -120,6 +121,7 @@ input:focus {
   font-weight: bold;
   color: #fff;
   border-radius: 32px;
+  border: none;
 }
 #send_btn:active {
   background-color: #AAA;
@@ -170,7 +172,6 @@ input:focus {
    height: 60px;
    border-radius: 30px;
    font-size: 42px;
-   padding: 0 10px;
    border: none;
    text-align: center;
    margin: 20px;
@@ -186,4 +187,5 @@ input:focus {
    border-radius: 30px;
    padding: 0 10px;
    text-align: center;
+   border: none;
  }
