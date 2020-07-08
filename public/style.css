@@ -1,3 +1,9 @@
+/* iOSのボタンが角丸グラデーションになるのをリセット */
+input[type="button"] {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
 * {
   margin: 0px;
   padding:0px;
@@ -165,13 +171,13 @@ input:focus {
  }
 
  #enter_title {
-  font-size: 2em;
+  font-size: 2.5em;
 }
  #enter_text {
    width: 500px;
    height: 60px;
    border-radius: 30px;
-   font-size: 42px;
+   font-size: 2.8em;
    border: none;
    text-align: center;
    margin: 20px;
@@ -182,7 +188,7 @@ input:focus {
    background-color: tomato;
    width: 500px;
    line-height: 60px;
-   font-size: 2em;
+   font-size: 2.8em;
    color: #fff;
    border-radius: 30px;
    padding: 0 10px;

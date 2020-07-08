@@ -1,4 +1,6 @@
 
+const fs = require('fs');
+const PATH_DATA = "./log/log.json"
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
@@ -106,9 +108,15 @@ function onConnection(socket) {
     delete players[socket.id];
     // プレイヤーリスト発信
     io.emit('players', JSON.stringify(players));
+    // 描画ログを保存
+    fs.writeFileSync(PATH_DATA, JSON.stringify(log));
   })
 
   // 接続時、ログを発信
+  if (io.eio.clientsCount === 1) {
+    // 1人目のクライアントはファイルから描画ログを読み込む
+    log = JSON.parse(fs.readFileSync(PATH_DATA));
+  }
   io.to(socket.id).emit("log", log);
 }
 

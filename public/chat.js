@@ -18,7 +18,9 @@
     // ただしsendボタンはユーザが続けて発言できるようスクロールしない。
     document.addEventListener('click', scrollTop);
     function scrollTop(e) {
-        if (e.target !== send_btn && isTouchDevice()) {
+        if (isTouchDevice() &&
+            e.target !== send_btn &&
+            e.target !== send_text) {
             window.scrollTo(0, 0);
         }
     }
@@ -28,6 +30,7 @@
     send_btn.addEventListener('click', sendMessage, false);
     function sendMessage(e) {
         e.preventDefault();
+        send_text.blur();
         send_text.focus();
         if (!send_text.value) { return };
         socket.emit('player_say', send_text.value);
