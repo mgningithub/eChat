@@ -393,4 +393,24 @@ get log
 ログが記録されている事を確認。
 Ctrl+cでheroku cli抜ける
 
+```
+heroku ps:scale web=0
+heroku ps:scale web=1
+```
+プロセスを再起動しログが描画される事を確認。
+起動直後にアクセスすると描画されない。
+もう一度アクセスすると描画される。
+DBアクセスが有効になるまでラグがあるのかと思ったが
+しばらく待っても1度目は描画されない。
+取得と描画の同期が取れていないとあたりをつけ、then以降の処理になるよう修正。
 
+```
+    redis.get("log").then(function (result) {
+      if (result) {
+        log = JSON.parse(result);
+        io.to(socket.id).emit("log", log);
+      };
+    });
+```
+
+ようやく、ログ描画を実装できた。
