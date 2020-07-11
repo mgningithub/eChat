@@ -118,10 +118,14 @@ function onConnection(socket) {
   if (io.eio.clientsCount === 1) {
     // 1人目のクライアントはDBから描画ログを読み込む
     redis.get("log").then(function (result) {
-      if (result) { log = JSON.parse(result); };
+      if (result) {
+        log = JSON.parse(result);
+        io.to(socket.id).emit("log", log);
+      };
     });
+  } else {
+    io.to(socket.id).emit("log", log);
   }
-  io.to(socket.id).emit("log", log);
 }
 
 io.on('connection', onConnection);

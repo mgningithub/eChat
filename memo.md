@@ -1,7 +1,8 @@
 ## 目標
-node.jsとsocket.ioを使ってお絵描きチャットを作る。
-開発は今までvagrand上のubuntuで行っていたが仮想環境での開発はひと手間かかる事と
-Expressのシンプルなサーバ機能を使うためWindows上でVSCode使いながら行う。
+node.jsとsocket.ioを使ってお絵描きチャットを作る。  
+~~開発は今までvagrand上のubuntuで行っていたが仮想環境での開発はひと手間かかる事と
+Expressのシンプルなサーバ機能を使うためWindows上でVSCode使いながら行う。~~  
+NoSQLデータベースRedis導入するためWindowsのWSLを使いLinux仮想環境でVSCode使いながら開発を行う。
 
 デプロイ先はherokuとする。
 クレカ未登録での無料時間は毎月550時間。  
@@ -314,12 +315,82 @@ herokuではファイル書き込みができず、永続化はDBかS3など外�
 
 ### Redis導入
 
+WSL上での作業となる。
 導入までは下記
+
 https://github.com/mgningithub/test-redis/blob/master/memo.md
+
+NoSQLデータベースは初めて使ったが、インメモリにKey-Valueで持つという事で
+ほとんどオブジェクト変数の感覚で扱えてしまうような。
+RDBと全然違う世界観。
 
 git cloneでリモートにリポジトリコピーして修正
 
 localhost:3000でアクセスできるようになるのはWSL2以降。
 WSLではhttp://192.168.11.6:3000/とipで指定。
+
+#### Heroku CLIインストール(WSL)
+
+```
+sudo snap install --classic heroku
+Interacting with snapd is not yet supported on Windows Subsystem for Linux.
+This command has been left available for documentation purposes only.
+```
+snapはWSLで対応してない。
+
+https://devcenter.heroku.com/articles/heroku-cli
+
+```
+curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
+gpg: can't connect to the agent: IPC connect call failed
+```
+エラー
+
+https://qiita.com/obukoh/items/416c4cb1b88261bf3357
+```
+sudo apt remove gpg
+sudo apt install gnupg1
+sudo heroku --version
+sudo heroku login
+sudo heroku apps
+sudo heroku create mgn-echat
+https://mgn-echat.herokuapp.com/ | https://git.heroku.com/mgn-echat.git
+sudo git push origin heroku
+```
+sudo つけて heroku, git push しないとエラーになる。
+
+https://devcenter.heroku.com/articles/heroku-redis#provisioning-the-add-on
+
+```
+$ sudo heroku addons:create heroku-redis:hobby-dev -a mgn-echat
+Creating heroku-redis:hobby-dev on ⬢ mgn-echat... !
+ ▸    Please verify your account to install this add-on plan (please enter a credit card) For more information, see https://devcenter.heroku.com/categories/billing
+ ▸    Verify now at https://heroku.com/verify
+```
+
+heroku-redisを使用するにはクレカ登録が必要
+Hobby Devプランは無料。
+```
+mgn@DESKTOP:~/code/node/eChat$ sudo heroku addons:create heroku-redis:hobby-dev -a mgn-echat
+Creating heroku-redis:hobby-dev on ⬢ mgn-echat... free
+Your add-on should be available in a few minutes.
+! WARNING: Data stored in hobby plans on Heroku Redis are not persisted.
+redis-transparent-01755 is being created in the background. The app will restart when complete...
+Use heroku addons:info redis-transparent-01755 to check creation progress
+Use heroku addons:docs heroku-redis to view documentation
+```
+```
+heroku addons:info redis-transparent-01755
+```
+Stateがcreatedになっている事を確認。
+
+```
+sudo heroku redis:cli
+mgn-echat
+keys *
+get log
+```
+ログが記録されている事を確認。
+Ctrl+cでheroku cli抜ける
 
 
