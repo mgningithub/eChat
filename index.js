@@ -1,6 +1,4 @@
 
-const fs = require('fs');
-const PATH_DATA = "./log/log.json"
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
@@ -8,6 +6,10 @@ const io = require('socket.io')(http);
 const port = process.env.PORT || 3000;
 
 app.use(express.static(__dirname + '/public'));
+
+// 描画ログの保存に使用
+const Redis = require('ioredis');
+const redis = new Redis(process.env.REDIS_URL);
 
 // 描画ログ
 let log = [];
@@ -109,13 +111,15 @@ function onConnection(socket) {
     // プレイヤーリスト発信
     io.emit('players', JSON.stringify(players));
     // 描画ログを保存
-    fs.writeFileSync(PATH_DATA, JSON.stringify(log));
+    redis.set("log", JSON.stringify(log));
   })
 
   // 接続時、ログを発信
   if (io.eio.clientsCount === 1) {
-    // 1人目のクライアントはファイルから描画ログを読み込む
-    log = JSON.parse(fs.readFileSync(PATH_DATA));
+    // 1人目のクライアントはDBから描画ログを読み込む
+    redis.get("log").then(function (result) {
+      if (result) { log = JSON.parse(result); };
+    });
   }
   io.to(socket.id).emit("log", log);
 }

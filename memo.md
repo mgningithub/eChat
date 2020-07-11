@@ -311,3 +311,15 @@ herokuは30分無稼働だとプロセスを停止させる。
 
 デプロイし、再起動を試したがログが反映されない。
 herokuではファイル書き込みができず、永続化はDBかS3など外部ストレージを使う必要があるらしい。引き続き課題とする。
+
+### Redis導入
+
+導入までは下記
+https://github.com/mgningithub/test-redis/blob/master/memo.md
+
+git cloneでリモートにリポジトリコピーして修正
+
+localhost:3000でアクセスできるようになるのはWSL2以降。
+WSLではhttp://192.168.11.6:3000/とipで指定。
+
+
