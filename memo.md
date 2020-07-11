@@ -63,7 +63,7 @@ error: failed to push some refs to >'https://git.heroku.com/majestic-biscayne-71
 >			See https://devcenter.heroku.com/articles/buildpacks
 > !     Push failed
 
-言語がわからないと言ってる。
+言語がわからないと言っている。
 そういえばnpm initしていない。
 
 `npm init`  
@@ -297,7 +297,9 @@ HelloTalk内ブラウザで文章をクリックすると翻訳が出てきて�
 
 https://github.com/mgningithub/eChat/issues
 
-### 描画ログを永続化させる
+---
+
+## 描画ログを永続化させる
 
 herokuは30分無稼働だとプロセスを停止させる。
 描画ログをサーバーのメモリで持つ為、停止されると描画ログが消える。
