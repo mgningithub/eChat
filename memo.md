@@ -63,8 +63,8 @@ error: failed to push some refs to >'https://git.heroku.com/majestic-biscayne-71
 >			See https://devcenter.heroku.com/articles/buildpacks
 > !     Push failed
 
-言語がわからんと言ってる。
-そういえばnpm initしてない。
+言語がわからないと言ってる。
+そういえばnpm initしていない。
 
 `npm init`  
 `npm install socket.io`  
@@ -255,12 +255,12 @@ sessionStorageを使う。次回のIssue。
 問題発生。
 接続時の名前入力にprompt使用しているが。
 HelloTalk内のブラウザはpromptが出ない。
-正常系ではありえない想定だった名前なしで接続された状態で操作されるとnameを参照しに行く処理でundefinedエラーが発生し
+名前なしで接続された状態で操作されるとnameを参照しに行く処理でundefinedエラーが発生し
 そのままサーバプロセスがこける。
 
 名前入力の画面を新たに用意して対応。
-サーバごと落ちる件nameを参照しに行く箇所にtry~catchと
-process.on('uncaughtException')で対応。
+nameを参照しに行く箇所にtry~catchと
+process.on('uncaughtException')でエラー発生しても拾ってプロセスが落ちないように対応。
 
 アプリを再起動  
 `heroku ps:scale web=0`  
@@ -286,12 +286,12 @@ PCでは不要な為、クライアントがタッチデバイスかどうか判
 
 途中参加のクライアントはまっさらなキャンバスからスタートで
 それ以前に描かれていた絵が見られなかった。
-サーバ側で描画ログを保持し、クライアント接続時にそれまでに描かれた絵を再生するよう修正。
+サーバ側で描画ログを保持し、クライアント接続時にそれまでに描かれた絵を再生するよう修正。(プロセス再起動で描画ログが消える為、後にRedisに記憶するようにする)
 
 ### ボタンをdivタグからbuttonに変更
 
 HelloTalk内ブラウザで文章をクリックすると翻訳が出てきてしまう。
-このためボタンが押しづらい。ボタンに変更する。
+このためdivのボタンが押しづらい。inputのボタンに変更する。
 
 ### IssueをGitHubのIssuesで管理
 
@@ -311,12 +311,13 @@ herokuは30分無稼働だとプロセスを停止させる。
 2人目以降はサーバーのメモリにある描画ログを使用する。
 
 デプロイし、再起動を試したがログが反映されない。
-herokuではファイル書き込みができず、永続化はDBかS3など外部ストレージを使う必要があるらしい。引き続き課題とする。
+herokuではファイル書き込みができず、永続化はDBかS3など外部ストレージを使う必要があるらしい。~~引き続き課題とする。~~
+Redis対応済み。
 
 ### Redis導入
 
 WSL上での作業となる。
-導入までは下記
+導入までは下記の通り。
 
 https://github.com/mgningithub/test-redis/blob/master/memo.md
 
