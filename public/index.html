@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name=”viewport” content=”width=device-width,initial-scale=1.0″>
   <title>eChat</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -22,50 +23,54 @@
     </div>
   </div>
 
-  <div id="app">
-    <!--操作-->
-    <div class="controls">
-      <div class="colors">
-        <div class="color black"></div>
-        <div class="color red"></div>
-        <div class="color green"></div>
-        <div class="color blue"></div>
-        <div class="color yellow"></div>
-        <div class="color white"></div>
-      </div>
-      <input type="button" id="clear" value="clear">
-    </div>
+  <!--絵チャット-->
+  <div class="app">
 
-    <!--キャンバス-->
-    <div class="drawing">
-      <!--
-        CSS読み込み前にJSがデフォルトのキャンバスサイズで認識する為
-        こちらでサイズ定義しておく。
-        CSS側の#appのwidthと同期を取る事
-      -->
-      <canvas class="whiteboard" width="900px" height="900px"></canvas>
-    </div>
-
-    <!--プレイヤーリスト-->
-    <div id="players"></div>
-
-    <!--発言-->
-    <div id="send">
-      <form id="send_form">
-        <input type="text" id="send_text">
-        <input type="button" id="send_btn" value="send">
-      </form>
-    </div>
-
-    <!--メッセージ-->
-    <div id="messages">
-      <template id="template">
-        <div class="message">
-          <span class="msg_name"></span>
-          <span class="msg_message"></span>
-          <span class="msg_timestamp"></span>
+    <!--描画画面-->
+    <div class="container draw">
+      <!--操作-->
+      <div class="controls">
+        <div class="colors">
+          <div class="color black"></div>
+          <div class="color red"></div>
+          <div class="color green"></div>
+          <div class="color blue"></div>
+          <div class="color yellow"></div>
+          <div class="color white"></div>
         </div>
-      </template>
+        <input type="button" class="btn" id="clear" value="clear">
+      </div>
+
+      <!--キャンバス-->
+      <!--CSS読み込み前にJSがデフォルトのキャンバスサイズで認識する為
+            こちらでサイズ定義しておく。
+            CSS側の#appのwidthと同期を取る事-->
+      <canvas class="whiteboard" width="900px" height="900px"></canvas>
+
+      <!--プレイヤーリスト-->
+      <div id="players"></div>
+    </div>
+
+    <!--チャット画面-->
+    <div class="container chat">
+      <!--発言-->
+      <div class="send">
+        <form id="send_form">
+          <input type="text" id="send_text">
+          <input type="button" class="btn" id="send_btn" value="send">
+        </form>
+      </div>
+
+      <!--メッセージ-->
+      <div id="messages">
+        <template id="template">
+          <div class="message">
+            <span class="msg_name"></span>
+            <span class="msg_message"></span>
+            <span class="msg_timestamp"></span>
+          </div>
+        </template>
+      </div>
     </div>
   </div>
 
