@@ -36,7 +36,7 @@ input:focus {
   max-width: 900px;
 }
 
-/* レスポンシブル
+/* レスポンシブ
    スクリーンが1500px未満はコンテナ1列表示
 */
 @media screen and (max-width: 1500px) {
