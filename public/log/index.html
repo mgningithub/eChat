@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>log</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .list-item {}
+
+        .list-enter-active,
+        .list-leave-active {
+            transition: all .30s;
+        }
+
+        .list-enter,
+        .list-leave-to {
+            opacity: 0;
+            transform: translateX(-100px);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <div class="container">
+            <canvas class="whiteboard" width="900px" height="900px"></canvas>
+            <transition-group name="list" tag="ol">
+                <chat-item v-for="item in list" v-bind:key="item" v-bind:item="item" class="list-item">
+                </chat-item>
+            </transition-group>
+        </div>
+    </div>
+
+    <script>'use strict'
+        Vue.component('chat-item', {
+            props: ['key', 'item'],
+            template: '<div class="log" onclick="showCanvas(event)">{{ item }}</div>'
+        })
+
+        new Vue({
+            el: '#app',
+            data: {
+                list: [],
+                chat: ''
+            },
+            mounted: function () {
+                this.show_list()
+                setInterval(() => { this.show_list() }, 1000)
+            },
+            methods: {
+                show_list: async function () {
+                    this.list = (await axios.get('/api/log')).data
+                    console.log(this.list)
+                },
+                show_item: async function () {
+                    this.list = (await axios.get('/api/log')).data
+                    console.log(this.list)
+                },
+            }
+        })
+    </script>
+
+    <script>'use strict'
+        let canvas = document.getElementsByClassName('whiteboard')[0];
+        let context = canvas.getContext('2d');
+
+        async function showCanvas(e) {
+            let data = (await axios.get('/api/log/' + e.target.textContent)).data;
+            context.clearRect;
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            data.forEach(log => { onDrawingEvent(log); });
+        }
+
+        function onDrawingEvent(data) {
+            var w = canvas.width;
+            var h = canvas.height;
+            drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color, data.thickness, data.alpha);
+        }
+
+        function drawLine(x0, y0, x1, y1, color, thickness, alpha, emit) {
+            /*
+             透明度について線の結合点が重なって濃くなってしまう為、
+             指定値に対して線形にならず指数関数的に濃くなってしまう。
+             解決するまでの暫定対応として計算を行う。
+            */
+            context.globalAlpha = (Number(alpha) === 1) ? 1 : alpha * 0.5;
+            context.strokeStyle = color;
+            context.lineWidth = thickness * 2;
+
+            context.lineCap = "round";
+            context.lineJoin = "round";
+            context.beginPath();
+            context.moveTo(x0, y0);
+            context.lineTo(x1, y1);
+            context.stroke();
+            context.closePath();
+        }
+    </script>
+
+</body>
+
+</html>

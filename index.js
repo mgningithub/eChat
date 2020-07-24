@@ -6,6 +6,8 @@ const io = require('socket.io')(http);
 const port = process.env.PORT || 3000;
 
 app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/log'));
+app.use('/api/log', require('./api'));
 
 // 描画ログの保存に使用
 const Redis = require('ioredis');
@@ -62,6 +64,29 @@ function onConnection(socket) {
   // キャンバスクリア
   socket.on('clear', () => {
     try {
+      // 描画ログを保存
+      const saveLog = async () => {
+        let log_strokes = log.length;
+        let log_string = JSON.stringify(log);
+        // 時刻編集
+        let date = new Date();
+        let ts = date.getFullYear().toString().slice(-2)
+          + '' + ("0" + (date.getMonth() + 1)).slice(-2)
+          + '' + ("0" + date.getDate()).slice(-2)
+          + '_' + ("0" + date.getHours()).slice(-2)
+          + '' + ("0" + date.getMinutes()).slice(-2)
+          + '' + ("0" + date.getSeconds()).slice(-2);
+        let key = `${ts}_${log_strokes}`;
+        await redis.lpush("log_list", key);
+        await redis.set(key, log_string);
+        if (await redis.llen("log_list") >= 100) {
+          await redis.del(await redis.rpop("log_list"))
+        }
+      }
+      if (log.length) {
+        saveLog();
+      }
+      // クリア
       io.emit('clear');
       // join経由していないsocket対策
       let name = (players[socket.id].name) ? players[socket.id].name : "[undefined]";

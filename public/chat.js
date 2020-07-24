@@ -73,7 +73,7 @@
 
     // 切断
     socket.on('disconnect', () => {
-        alert('disconnected !');
+        // alert('disconnected !');
         socket.close
         // 時刻編集
         let date = new Date();
@@ -97,6 +97,7 @@
 
     // 入室、名前入力
     const enter_div = document.getElementById("enter_div");
+    const enter_container = document.getElementById("enter_container");
     const enter_form = document.getElementById("enter_form");
     const enter_text = document.getElementById("enter_text");
     const enter_btn = document.getElementById("enter_btn");
@@ -111,9 +112,7 @@
         socket.emit('join', name);
         // 入室画面のコントロールを無効
         enter_div.style.pointerEvents = "none";
-        enter_form.removeEventListener('submit', enterRoom, false);
-        enter_form.addEventListener('submit', (e) => { e.preventDefault(); }, false);
-        enter_btn.removeEventListener('click', enterRoom, false);
+        enter_container.remove();
         enter_div.style.zIndex = "-1";
         enter_div.style.opacity = "0%"
     }
