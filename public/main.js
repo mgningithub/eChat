@@ -8,7 +8,8 @@
 
   var current = {
     color: 'black',
-    thickness: 1
+    thickness: 1,
+    alpha: 1
   };
   var drawing = false;
 
@@ -29,14 +30,21 @@
 
   socket.on('drawing', onDrawingEvent);
 
-  function drawLine(x0, y0, x1, y1, color, thickness, emit) {
+  function drawLine(x0, y0, x1, y1, color, thickness, alpha, emit) {
+    /*
+     透明度について線の結合点が重なって濃くなってしまう為、
+     指定値に対して線形にならず指数関数的に濃くなってしまう。
+     解決するまでの暫定対応として計算を行う。
+    */
+    context.globalAlpha = (Number(alpha) === 1) ? 1 : alpha * 0.5;
+    context.strokeStyle = color;
+    context.lineWidth = thickness * 2;
+
     context.lineCap = "round";
     context.lineJoin = "round";
     context.beginPath();
     context.moveTo(x0, y0);
     context.lineTo(x1, y1);
-    context.strokeStyle = color;
-    context.lineWidth = thickness * 2;
     context.stroke();
     context.closePath();
 
@@ -50,7 +58,8 @@
       x1: x1 / w,
       y1: y1 / h,
       color: color,
-      thickness: thickness
+      thickness: thickness,
+      alpha: alpha
     });
   }
   /**
@@ -79,13 +88,13 @@
     drawing = false;
     if (e.touches) { return false }; // タッチ終了系イベントではオブジェクト取得できない為ここで終了
     let p = getPosition(e);
-    drawLine(current.x, current.y, p.x, p.y, current.color, current.thickness, true);
+    drawLine(current.x, current.y, p.x, p.y, current.color, current.thickness, current.alpha, true);
   }
 
   function onMouseMove(e) {
     if (!drawing) { return; }
     let p = getPosition(e);
-    drawLine(current.x, current.y, p.x, p.y, current.color, current.thickness, true);
+    drawLine(current.x, current.y, p.x, p.y, current.color, current.thickness, current.alpha, true);
     current.x = p.x;
     current.y = p.y;
   }
@@ -116,7 +125,7 @@
   function onDrawingEvent(data) {
     var w = canvas.width;
     var h = canvas.height;
-    drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color, data.thickness);
+    drawLine(data.x0 * w, data.y0 * h, data.x1 * w, data.y1 * h, data.color, data.thickness, data.alpha);
   }
 
   // キャンバスクリア
@@ -130,6 +139,7 @@
     data.forEach(log => { onDrawingEvent(log); });
   }
 
+  // 線の太さ
   const thickness_input = document.getElementById('thickness_input');
   const thickness_output = document.getElementById('thickness_output');
   thickness_input.addEventListener('input', onInputThickness, false);
@@ -138,8 +148,19 @@
     current.thickness = thickness_input.value;
   }
   //初期化
-  thickness_input.value = thickness;
-  thickness_output.value = thickness_input.value;
-  current.thickness = thickness_input.value;
+  thickness_input.value = current.thickness;
+  thickness_output.value = current.thickness;
+
+  // 線の透明度
+  const alpha_input = document.getElementById('alpha_input');
+  const alpha_output = document.getElementById('alpha_output');
+  alpha_input.addEventListener('input', onInputAlpha, false);
+  function onInputAlpha(e) {
+    alpha_output.value = alpha_input.value;
+    current.alpha = alpha_input.value;
+  }
+  //初期化
+  alpha_input.value = current.alpha;
+  alpha_output.value = current.alpha;
 
 })();

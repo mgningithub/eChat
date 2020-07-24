@@ -76,9 +76,9 @@ input:focus {
 .color.white { background-color: white; }
 
 /* 太さ */
-.thickness_input {
-  width: 30%;
-  margin: 0 20px;
+/* 透明度 */
+.range_input {
+  margin: 0 5px;
   -webkit-appearance: none;
   appearance: none;
   background-color: #ffdae7;
@@ -86,7 +86,7 @@ input:focus {
   border-radius: 6px;
   vertical-align: middle;
 }
-.thickness_input::-webkit-slider-thumb {
+.range_input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   cursor: pointer;
@@ -98,10 +98,21 @@ input:focus {
   border-radius: 50%;
   -webkit-border-radius: 50%;
 }
-
-.thickness_output {
+.range_input.thickness_input {
+  width: 15%;
+}
+.range_input.alpha_input {
+  width: 12%;
+}
+.range_output {
+  display: inline-block;
   vertical-align: middle;
   font-size: 2em;
+  margin: 0 0;
+  width: 40px;
+}
+.range_output.alpha_output {
+  width: 60px;
 }
 
 /* ボタン */

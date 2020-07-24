@@ -91,6 +91,8 @@
         clone.querySelector('.msg_timestamp').textContent = ts;
         clone.querySelector('.message').style.background = "red";
         messages.insertBefore(clone, messages.firstChild);
+        // 画面が残っているとソケットが自動再接続して名無しで描画可能になるため再入室させる
+        location.reload();
     });
 
     // 入室、名前入力
